@@ -63,6 +63,46 @@ function drums_news_category($atts='') {
 
  <?php  endif; ?>
  </div><!-- .container -->   
+
+
+//Shortcode for displaying custom query with ebooks
+
+function xamin_books() {
+	$buffer = '<div class="ebook-grid">';
+  
+		$q = new WP_Query(array(
+			'post_type' => 'book',
+			'posts_per_page' => 5
+		));
+
+while ($q->have_posts()) {
+	      $q->the_post();
+
+	  $buffer .= '<div class="ebook-card">';
+
+         $buffer .= '<div class="wpb_single_image"><img src=';  
+         $buffer .= get_field('book_image');  
+         $buffer .= '>';  
+    
+         $buffer .= '<h2>'.get_the_title().'</h2><p>';
+         $buffer .= get_field('book_description');
+        
+        $buffer .= '</p></div><div><a href=';  
+        $buffer .= get_field('download_file');  
+        $buffer .= ' target="_blank" download>Download File</a>'; 
+        $buffer .= '</div></div>';
+ 
+    }
+
+wp_reset_postdata();
+  
+$buffer .= '</div>';
+
+return $buffer;
+
+}
+
+add_shortcode('books', 'xamin_books');
      
  <?php 
 }
